@@ -1,0 +1,5 @@
+  I changed my mind about what kind of project I wanted to do, so now I am doing a project in which a user can input a Pokemon team and calculate its stats from information given (In Pokemon games,
+  there's a lot of stat variation depending on a variety of factors). So far, I've created a Pokemon class with all of the relevant attributes of a Pokemon, the nickname of a Pokemon will be relevant
+  once I add a way for the user to add Pokemon to their team.  I've also added a way for my program to read in the text file into a HashMap, and added a way to print a formatted list of the user's current team.
+  Next I need to add a way for the player to add Pokemon onto their team. Once they add a Pokemon, they'll be prompted for the IVs, EVs, Level, and Nature in order to calculate its stats. I'll need to make a function to
+  do this. I am also considering adding a "Weaknesses/Resistances" check for any individual Pokemon, although I am unsure about this as of right now.
