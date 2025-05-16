@@ -11,13 +11,12 @@ public class Main {
         //Used a HashMap because it is faster than an ArrayList for searching.
         HashMap<String, Pokemon> pokedex = new HashMap<>();
 
-        //Used an ArrayList because it is easer to add and remove elements.
-        ArrayList<Pokemon> playerPokemon = new ArrayList<>();
+        PokemonTeam playerTeam = new PokemonTeam();
 
         //Get the Pokemon data from the text file pokemon.txt
-        Scanner input = null;
+        Scanner fileScanner = null;
         try{
-            input = new Scanner(new File("pokemon.txt"));
+            fileScanner = new Scanner(new File("pokemon.txt"));
         }catch (FileNotFoundException e) {
             System.out.println("File not found.");
             e.printStackTrace();
@@ -26,8 +25,8 @@ public class Main {
         //I ignore fields[0] because the number is not important information to display.
         //Since two Pokemon can have the same name if they have a different form, I used the name and form as the key for non-base forms of Pokemon.
         //For example, "Charizard" and "Charizard:Mega Charizard X" are different keys.
-        while(input.hasNext()){
-            String[] fields = input.nextLine().split(",");
+        while(fileScanner.hasNext()){
+            String[] fields = fileScanner.nextLine().split(",");
             Pokemon newPokemon = new Pokemon(fields[1], fields[2], fields[3], fields[4], Integer.parseInt(fields[5]), Integer.parseInt(fields[6]), Integer.parseInt(fields[7]), Integer.parseInt(fields[8]), Integer.parseInt(fields[9]), Integer.parseInt(fields[10]));
             if(fields[2].isEmpty()){
                 pokedex.put(fields[1], newPokemon);
@@ -36,10 +35,16 @@ public class Main {
             pokedex.put(fields[1] + ":" +  fields[2], newPokemon);
             }
         }
-        System.out.println("Welcome to Pokemon Team Builder!");
-        playerPokemon.add(pokedex.get("Charizard"));
-        playerPokemon.add(pokedex.get("Urshifu:Single Strike Style"));
-        printTeam(playerPokemon);
+        fileScanner.close();
+        
+
+        System.out.println("Welcome to Pokemon Team Builder!\n\nWhat would you like to do?\n1. Create a new team\n2. Edit an existing team\n3. Exit\n");
+        //playerTeam.printTeam();
+        //playerTeam.addPokemon(pokedex.get("Charizard"));
+        //playerTeam.addPokemon(pokedex.get("Urshifu:Single Strike Style"));
+        //playerTeam.printTeam();
+        //playerTeam.removePokemon(pokedex.get("Charizard"));
+        //playerTeam.printTeam();
 
     
 
