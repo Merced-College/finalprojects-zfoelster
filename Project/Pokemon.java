@@ -11,6 +11,7 @@ private int defense;
 private int spAttack;
 private int spDefense;
 private int speed;
+private int statTotal;
 private String nickname;
 
     public Pokemon(String name, String form, String type1, String type2, int health, int attack, int defense, int spAttack, int spDefense, int speed) {
@@ -24,6 +25,7 @@ private String nickname;
         this.spAttack = spAttack;
         this.spDefense = spDefense;
         this.speed = speed;
+        this.statTotal = health + attack + defense + spAttack + spDefense + speed;
     }
 
 //Since Pokemon can have two types, I used an if else statement to check if there is a second type.
@@ -68,6 +70,10 @@ private String nickname;
 
     public int getSpeed() {
         return speed;
+    }
+
+    public int getStatTotal() {
+        return statTotal;
     }
 
     public String getNickname() {
