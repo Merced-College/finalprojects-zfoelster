@@ -80,18 +80,43 @@ public class Main {
         //playerTeam.printTeam();
         Scanner userScanner = new Scanner(System.in);
         int userChoice = 0;
-        System.out.println("Welcome to Pokemon Team Builder!\\n");
         clearScreen();
+        System.out.println("Welcome to Pokemon Team Builder!\\n");
+
+        //True is used to keep the program running until the user chooses to exit.
         while(true){
             if (userChoice > 3 || userChoice < 1){
                 System.out.println("What would you like to do?\n1. Create a new team\n2. Edit an existing team\n3. Exit\n");
                 userChoice = userScanner.nextInt();
+                //Get team name and then create a new team with that name, the user is then prompted to edit the new team.
                 if (userChoice == 1){
-                    //Create a new team
+                    PokemonTeam newTeam = new PokemonTeam();
+                    char confirm = 'q';
+                    while(true){
+                        System.out.println("Enter a name for your team:");
+                        String teamName = userScanner.next();
+                        System.out.println("Do you want your name to be'" + teamName + "'? (type y for yes)");
+                        confirm = userScanner.next().charAt(0);
+                        if (confirm == 'y'){
+                            newTeam.setTeamName(teamName);
+                            newTeam.editTeam(userScanner, pokedex);
+                            playerTeams.add(newTeam);
+                            System.out.println("Your team has been created!");
+                            userChoice = 0;
+                            break;
+                        }
+                        else{
+                        }
+                    }
                 }
+
+                //List of teams is shown to the user, and they are prompted to choose a team to edit.
                 else if (userChoice == 2){
-                    editTeamChoice(playerTeams);
+                    editTeamChoice(playerTeams, pokedex);
+                    userChoice = 0;
                 }
+
+                //Exit the program.
                 else if (userChoice == 3){
                     System.out.println("Bye!");
                     break;
@@ -113,15 +138,15 @@ public class Main {
         System.out.flush();  
     }
 
-
-    public static void editTeamChoice(ArrayList<PokemonTeam> teams){
+    //This function is used to edit a team, it shows the user a list of teams and prompts them to choose one. If there are no teams it lets the user know. 
+    public static void editTeamChoice(ArrayList<PokemonTeam> teams, HashMap <String, Pokemon> pokedex){
         clearScreen();
         Scanner userScanner = new Scanner(System.in);
         if(teams.isEmpty()){
             System.out.println("You have no teams to edit.");
         }
         else{
-            System.out.println("Choose a team or type '0' to go back:");
+            System.out.println("Choose a team to edit:");
             for (int i = 0; i < teams.size(); i++){
                 System.out.println((i + 1) + ". " + teams.get(i).getTeamName());
                 if (i == teams.size() - 1){
@@ -139,7 +164,7 @@ public class Main {
                 }
             }
             if(userChoice != teams.size() + 1){
-                teams.get(userChoice - 1).editTeam(userScanner);
+                teams.get(userChoice - 1).editTeam(userScanner, pokedex);
             }
         }
     clearScreen();

@@ -12,7 +12,6 @@ private int spAttack;
 private int spDefense;
 private int speed;
 private int statTotal;
-private String nickname;
 
     public Pokemon(String name, String form, String type1, String type2, int health, int attack, int defense, int spAttack, int spDefense, int speed) {
         this.name = name;
@@ -36,6 +35,18 @@ private String nickname;
         else{
             return type1 + "/" + type2;
         }
+    }
+
+    public String getForm() {
+        return form;
+    }
+
+    public String getType1() {
+        return type1;
+    }
+
+    public String getType2() {
+        return type2;
     }
     
 
@@ -74,13 +85,5 @@ private String nickname;
 
     public int getStatTotal() {
         return statTotal;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void changeNickname(String nickname){
-        this.nickname = nickname;
     }
 }
