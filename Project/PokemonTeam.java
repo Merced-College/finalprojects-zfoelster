@@ -16,6 +16,10 @@ public class PokemonTeam {
         this.teamName = teamName;
     }
 
+    public ArrayList<Pokemon> getPlayerPokemon(){
+        return playerPokemon;
+    }
+
     public String getTeamName(){
         return teamName;
     }
@@ -30,18 +34,24 @@ public class PokemonTeam {
 
 
     public void userAddPokemon(Scanner userScanner, HashMap<String, Pokemon> pokedex){
+        clearScreen();
+        if (playerPokemon.size() >= 6){
+            return;
+        }
+
         String userPokemon = "";
 
         //These all determine the Pokemon's stats.
+        char userInput = 'q';
         int userLevel = 0;
         int[] userStats = new int[6];
-        int[] userIVs = new int[6];
-        int[] userEVs = new int[6];
+        int[] userIVs = {-1, -1, -1, -1, -1, -1};
+        int[] userEVs = {-1, -1, -1, -1, -1, -1};
 
         //All the while loops are to gain relevant information needed to calculate the stats of the Pokemon.
         while(true){
-            System.out.println("Enter the name of the Pokemon you want to add:");
-            userPokemon = userScanner.next();
+            System.out.println("Enter the name of the Pokemon you want to add (For forms, enter  'Pokemon's name' + ':' + 'form name'. Ex: 'Charizard:Mega Charizard Y' Please remember this is case-sensitive, start each word with a capital letter):");
+            userPokemon = userScanner.nextLine();
             if(pokedex.containsKey(userPokemon)){
                 break;
             }
@@ -51,7 +61,9 @@ public class PokemonTeam {
         }
         while(true){
             System.out.println("Enter the level of the Pokemon:");
-            userLevel = userScanner.nextInt();
+            userInput = userScanner.next().charAt(0);
+            userScanner.nextLine();    
+            userLevel = userInput - '0';
             if(userLevel > 0 && userLevel < 101){
                 break;
             }
@@ -60,9 +72,11 @@ public class PokemonTeam {
             }
         }
         while(true){
-            System.out.println("Enter the IVs of the Pokemon (HP, ATK, DEF, SP. ATK, SP. DEF, SPD):");
+            System.out.println("Enter the IVs of the Pokemon 0-31 (HP, ATK, DEF, SP. ATK, SP. DEF, SPD):");
             for(int i = 0; i < userIVs.length; i++){
-                userIVs[i] = userScanner.nextInt();
+                userInput = userScanner.next().charAt(0);
+                userScanner.nextLine();
+                userIVs[i] = userInput - '0';
                 if(userIVs[i] < 0 || userIVs[i] > 31){
                     System.out.println("Invalid IV. Please try again.");
                     break;
@@ -73,10 +87,11 @@ public class PokemonTeam {
             }
         }
         while(true){
-            System.out.println("Enter the EVs of the Pokemon (HP, ATK, DEF, SP. ATK, SP. DEF, SPD):");
-            userEVs = new int[6];
+            System.out.println("Enter the EVs of the Pokemon 0-255 (HP, ATK, DEF, SP. ATK, SP. DEF, SPD):");
             for(int i = 0; i < userEVs.length; i++){
-                userEVs[i] = userScanner.nextInt();
+                userInput = userScanner.next().charAt(0);
+                userScanner.nextLine();
+                userEVs[i] = userInput - '0';
                 if(userEVs[i] < 0 || userEVs[i] > 255){
                     System.out.println("Invalid EV. Please try again.");
                     break;
@@ -125,35 +140,68 @@ public class PokemonTeam {
         }
         Pokemon newPokemon = new Pokemon(pokedex.get(userPokemon).getName(), pokedex.get(userPokemon).getForm(), pokedex.get(userPokemon).getType1(), pokedex.get(userPokemon).getType2(), userStats[0], userStats[1], userStats[2], userStats[3], userStats[4], userStats[5]);
         playerPokemon.add(newPokemon);
+        clearScreen();
     }
 
+
+    //This function is used to get the user's choices and edit the team depending on what they choose
     public void editTeam(Scanner userScanner, HashMap<String, Pokemon> pokedex){
-        int userChoice = -1;
+        char userChoice = 'q';
+        int userChoiceInt = 0;
         while(true){
+            clearScreen();
             printTeam();
-            System.out.println("What would you like to do?\n1. Add a Pokemon\n2. Remove a Pokemon\n3. Exit");
-            userChoice = userScanner.nextInt();
-            if (userChoice > 3 || userChoice < 1){
+            System.out.println("What would you like to do?\n1. Add a Pokemon\n2. Remove a Pokemon\n3. Clear team \n4. Exit");
+            userChoice = userScanner.next().charAt(0);
+            userScanner.nextLine();
+            userChoiceInt = userChoice - '0';
+            if (userChoiceInt > 4 || userChoiceInt < 1){
                 System.out.println("invalid choice. Please try again.");
             }
-            else if(userChoice == 1){
+
+            //Since there is another function to add a Pokemon, I just call that function here.
+            else if(userChoiceInt == 1){
             userAddPokemon(userScanner, pokedex);
          }
-         else if(userChoice == 2){
+         //Removes Pokemon using a while loop to get the user's choice.
+         else if(userChoiceInt == 2){
+            if(playerPokemon.size() == 0){
+                System.out.println("You have no Pokemon to remove.");
+                continue;
+            }
             while(true){
+                clearScreen();
                 System.out.println("Choose a Pokemon to remove:");
                 printTeam();
-                userChoice = userScanner.nextInt();
-                if(userChoice > playerPokemon.size() || userChoice < 1){
+                userChoice = userScanner.next().charAt(0);
+                userScanner.nextLine();
+                userChoiceInt = userChoice - '0';
+                if(userChoiceInt > playerPokemon.size() || userChoiceInt < 1){
                     System.out.println("invalid choice. Please try again.");
                 }
                 else{
                     break;
                 }
             }
-            playerPokemon.remove(userChoice - 1);
+            playerPokemon.remove(userChoiceInt - 1);
          }
-         else if(userChoice == 3){
+
+         //This clears the team, if the team is cleared when the program ends the team will be deleted.
+         else if(userChoiceInt ==3){
+            clearScreen();
+            System.out.println("Are you sure you want to clear your team? (type 'y' for yes)");
+            char confirm = userScanner.next().charAt(0);
+            if(confirm == 'y'){
+                clearScreen();
+                playerPokemon.clear();
+                System.out.println("Your team has been cleared.");
+            }
+            else{
+                clearScreen();
+                System.out.println("Your team has not been cleared.");
+            }
+         }
+         else if(userChoice == 4){
             break;
          }
         }
@@ -195,6 +243,11 @@ public class PokemonTeam {
                 p.getStatTotal());
         }
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------");
+    }
+
+    public static void clearScreen() {  
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
     }
 
 }

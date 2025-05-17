@@ -33,7 +33,9 @@ private int statTotal;
             return type1;
         }
         else{
+            
             return type1 + "/" + type2;
+            
         }
     }
 
@@ -49,14 +51,20 @@ private int statTotal;
         return type2;
     }
     
-
+    //Since some Pokemon have forms, I used an if else statement to check if there is a form.
     public String getName() {
         if(form.isEmpty()){
             return name;
         }
         else{
-            return name + " (" + form + ")";
-        }
+            //If the name contains the form, it means that the form is already in the name, so I don't need to add it again. I don't know why the form sometimes prints double, but this fixes it.
+            if(name.contains(form)){
+                return name;
+            }
+            else{
+                return name + " (" + form + ")";
+            }
+        }   
     }
 
     public int getHealth() {

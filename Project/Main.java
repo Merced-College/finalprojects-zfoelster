@@ -5,6 +5,8 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.io.FileWriter;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -79,30 +81,36 @@ public class Main {
         //playerTeam.removePokemon(pokedex.get("Charizard"));
         //playerTeam.printTeam();
         Scanner userScanner = new Scanner(System.in);
-        int userChoice = 0;
+        char userChoice = '0';
+        int userChoiceInt = 0;
         clearScreen();
-        System.out.println("Welcome to Pokemon Team Builder!\\n");
+        System.out.println("Welcome to Pokemon Team Builder!\n");
 
         //True is used to keep the program running until the user chooses to exit.
         while(true){
-            if (userChoice > 3 || userChoice < 1){
+            if (userChoiceInt > 3 || userChoiceInt < 1){
                 System.out.println("What would you like to do?\n1. Create a new team\n2. Edit an existing team\n3. Exit\n");
-                userChoice = userScanner.nextInt();
+                userChoice = userScanner.next().charAt(0);
+                userScanner.nextLine();
+                userChoiceInt = Character.getNumericValue(userChoice);
                 //Get team name and then create a new team with that name, the user is then prompted to edit the new team.
-                if (userChoice == 1){
+                if (userChoiceInt == 1){
+                    clearScreen();
                     PokemonTeam newTeam = new PokemonTeam();
                     char confirm = 'q';
                     while(true){
-                        System.out.println("Enter a name for your team:");
+                        System.out.println("Enter a 1 word name for your team:");
                         String teamName = userScanner.next();
                         System.out.println("Do you want your name to be'" + teamName + "'? (type y for yes)");
                         confirm = userScanner.next().charAt(0);
                         if (confirm == 'y'){
+                            clearScreen();
                             newTeam.setTeamName(teamName);
                             newTeam.editTeam(userScanner, pokedex);
                             playerTeams.add(newTeam);
+                            clearScreen();
                             System.out.println("Your team has been created!");
-                            userChoice = 0;
+                            userChoiceInt = 0;
                             break;
                         }
                         else{
@@ -111,13 +119,15 @@ public class Main {
                 }
 
                 //List of teams is shown to the user, and they are prompted to choose a team to edit.
-                else if (userChoice == 2){
+                else if (userChoiceInt == 2){
+                    clearScreen();
                     editTeamChoice(playerTeams, pokedex);
-                    userChoice = 0;
+                    userChoiceInt = 0;
                 }
 
                 //Exit the program.
-                else if (userChoice == 3){
+                else if (userChoiceInt == 3){
+                    clearScreen();
                     System.out.println("Bye!");
                     break;
                 }
@@ -128,11 +138,34 @@ public class Main {
             }
         }
         userScanner.close();
-    
+        
+
+        //Write the teams to the text file pokemonTeams.txt
+        //The file is overwritten each time the program is run.
+        //Copilot helped me with this code as I was new to writing to files.
+        try (FileWriter writer = new FileWriter("pokemonTeams.txt")) {
+            //For every team in the player's team, write the team name and then...
+            for (PokemonTeam team : playerTeams) {
+                //If it is empty, we don't want to save the tream.
+                if(!team.getPlayerPokemon().isEmpty()){
+                    writer.write(team.getTeamName() + ",");
+                    //For every Pokemon in the team, write the Pokemon's name, form, type1, type2, health, attack, defense, spAttack, spDefense, speed. Seperate these all with commas and at the end place an exclamation mark as that's how it will be read the next time the user runs the program. 
+                    if (team.getPlayerPokemon().isEmpty()){
+                    }
+                    for (Pokemon pokemon : team.getPlayerPokemon()) {
+                        writer.write(pokemon.getName() + "," + pokemon.getForm() + "," + pokemon.getType1() + "," + pokemon.getType2() + "," + pokemon.getHealth() + "," + pokemon.getAttack() + "," + pokemon.getDefense() + "," + pokemon.getSpAttack() + "," + pokemon.getSpDefense() + "," + pokemon.getSpeed() + ",");
+                    }
+                    writer.write("!\n");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }   
+        
 
     }
 
-    //Copilot gave me this function to clear the screen, looks nicer. 
+    //Copilot gave me this function to clear the screen and upon looking it up it seems that it depends on what you're using as to whether it works. It works here though, and it looks nicer. 
     public static void clearScreen() {  
         System.out.print("\033[H\033[2J");  
         System.out.flush();  
@@ -142,10 +175,12 @@ public class Main {
     public static void editTeamChoice(ArrayList<PokemonTeam> teams, HashMap <String, Pokemon> pokedex){
         clearScreen();
         Scanner userScanner = new Scanner(System.in);
+        //So the user doesn't get stuck in an infinite loop if they have no teams.
         if(teams.isEmpty()){
             System.out.println("You have no teams to edit.");
         }
         else{
+            //Prints the teams in a numbered list with their name and lets the user choose one to edit.
             System.out.println("Choose a team to edit:");
             for (int i = 0; i < teams.size(); i++){
                 System.out.println((i + 1) + ". " + teams.get(i).getTeamName());
@@ -153,18 +188,23 @@ public class Main {
                     System.out.println((teams.size() + 1) + ". Go back");
                 }
             }
-            int userChoice = -1;
+            char userChoice = 'q';
+            int userChoiceInt = 0;
             while(true){
-                userChoice = userScanner.nextInt();
-                if(userChoice > teams.size() + 1 || userChoice < 1){
+                userChoice = userScanner.next().charAt(0);
+                userScanner.nextLine();
+                userChoiceInt = userChoice - '0';
+                if(userChoiceInt > teams.size() + 1 || userChoiceInt < 1){
                     System.out.println("Invalid choice. Please try again.");
                 }
                 else{
+                    clearScreen();
                     break;
                 }
             }
-            if(userChoice != teams.size() + 1){
-                teams.get(userChoice - 1).editTeam(userScanner, pokedex);
+            if(userChoiceInt != teams.size() + 1){
+                //This function is used to edit an indicidual team.
+                teams.get(userChoiceInt - 1).editTeam(userScanner, pokedex);
             }
         }
     clearScreen();
