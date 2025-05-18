@@ -42,7 +42,6 @@ public class PokemonTeam {
         String userPokemon = "";
 
         //These all determine the Pokemon's stats.
-        char userInput = 'q';
         int userLevel = 0;
         int[] userStats = new int[6];
         int[] userIVs = {-1, -1, -1, -1, -1, -1};
@@ -59,46 +58,56 @@ public class PokemonTeam {
                 System.out.println("Pokemon not found. Please try again.");
             }
         }
+        //Get level
         while(true){
             System.out.println("Enter the level of the Pokemon:");
-            userInput = userScanner.next().charAt(0);
-            userScanner.nextLine();    
-            userLevel = userInput - '0';
-            if(userLevel > 0 && userLevel < 101){
-                break;
+            if(userScanner.hasNextInt()){
+                userLevel = userScanner.nextInt();
+                userScanner.nextLine();
+                if(userLevel > 0 && userLevel < 101){
+                    break;
+                }
+                else{
+                    System.out.println("Invalid level. Please try again.");
+                }
             }
             else{
-                System.out.println("Invalid level. Please try again.");
+                System.out.println("Please enter a number.");
+                userScanner.nextLine();
             }
         }
+        //Get IVs
         while(true){
             System.out.println("Enter the IVs of the Pokemon 0-31 (HP, ATK, DEF, SP. ATK, SP. DEF, SPD):");
-            for(int i = 0; i < userIVs.length; i++){
-                userInput = userScanner.next().charAt(0);
-                userScanner.nextLine();
-                userIVs[i] = userInput - '0';
-                if(userIVs[i] < 0 || userIVs[i] > 31){
-                    System.out.println("Invalid IV. Please try again.");
+            if(userScanner.hasNextInt()){
+                for(int i = 0; i < userIVs.length; i++){
+                    userIVs[i] = userScanner.nextInt();
+                    userScanner.nextLine();
+                    if(userIVs[i] < 0 || userIVs[i] > 31){
+                        System.out.println("Invalid IV. Please try again.");
+                        break;
+                    }
+                }
+                if(userIVs[5] <= 31 && userIVs[5] >= 0){
                     break;
                 }
-            }
-            if(userIVs[5] <= 31 && userIVs[5] >= 0){
-                break;
-            }
         }
+        }
+        //Get EVs
         while(true){
             System.out.println("Enter the EVs of the Pokemon 0-255 (HP, ATK, DEF, SP. ATK, SP. DEF, SPD):");
-            for(int i = 0; i < userEVs.length; i++){
-                userInput = userScanner.next().charAt(0);
-                userScanner.nextLine();
-                userEVs[i] = userInput - '0';
-                if(userEVs[i] < 0 || userEVs[i] > 255){
-                    System.out.println("Invalid EV. Please try again.");
+            if(userScanner.hasNextInt()){
+                for(int i = 0; i < userEVs.length; i++){
+                    userEVs[i] = userScanner.nextInt();
+                    userScanner.nextLine();
+                    if(userEVs[i] < 0 || userEVs[i] > 255){
+                        System.out.println("Invalid EV. Please try again.");
+                        break;
+                    }
+                }
+                if(userEVs[5] <= 255 && userEVs[5] >= 0){
                     break;
                 }
-            }
-            if(userEVs[5] <= 255 && userEVs[5] >= 0){
-                break;
             }
         }
         
@@ -110,6 +119,10 @@ public class PokemonTeam {
         userStats[0] = userStats[0] * userLevel;
         userStats[0] = userStats[0]/100;
         userStats[0] += userLevel + 10;
+        //This specific Pokemon has 1 HP always, so I had to add a special case for it.
+        if(pokedex.get(userPokemon).getName().equals("Shedninja")){
+            userStats[0] = 1;
+        }
 
         //All other stats the formula is the same, it may of been easier to make a general function to get stats as opposed to seperate ones.
         for(int i = 1; i < userStats.length; i++){
@@ -138,6 +151,7 @@ public class PokemonTeam {
             userStats[i] += 5;
             
         }
+        //Add all data to a Pokemon object, add that to the team.
         Pokemon newPokemon = new Pokemon(pokedex.get(userPokemon).getName(), pokedex.get(userPokemon).getForm(), pokedex.get(userPokemon).getType1(), pokedex.get(userPokemon).getType2(), userStats[0], userStats[1], userStats[2], userStats[3], userStats[4], userStats[5]);
         playerPokemon.add(newPokemon);
         clearScreen();
@@ -201,7 +215,7 @@ public class PokemonTeam {
                 System.out.println("Your team has not been cleared.");
             }
          }
-         else if(userChoice == 4){
+         else if(userChoiceInt == 4){
             break;
          }
         }

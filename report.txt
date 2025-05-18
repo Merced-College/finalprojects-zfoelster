@@ -1,0 +1,28 @@
+    This program lets the user build a team from the videogame series Pokemon and calculates the teams stats based off of the information the user inputs. This is useful to get an overview of what certain teams may look like.
+I used as HashMap, ArrayList, and Arrays in this assignment for different purposes. I used the HashMap as it provided an efficient way to read in all the data from the pokemon.txt file, which contained more than 1000 entries.
+I set the initial capacity of the HashMap to 2048 since the size of it goes to a power of two and it is enough space as to not have too many collisions, making the average retrieval time O(1). This also makes the put average
+time around O(1) aswell, which is good considering how many elements need to be added to the HashTable when the program first starts as it needs to add all the Pokemon data from pokemon.txt.  The ArrayList was used for 
+holding all the teams from the pokemonTeams.txt file along with newly created teams. It was also used to hold all the Pokemon withing the team class. Since the teams are just added at the end of the ArrayList, there's 
+an O(1) complexity from adding new teams. Teams are automatically removed from the teamlist if they are empty when the program iterates through the array at the end, it goes through all the teams and then all the Pokemon
+(of which there can be a maximum of 6) making for a complexity around O(n) when writing to the file using an ArrayList.
+    
+    
+    Two examples of algorithms I've used in this app are the "writePokemonTeams" function and the "addUserPokemon" function. I did get some help with the writePokemonteams function from the coPilot AI on codespaces as I
+hadn't written to a file in Java before, however I needed to make adjustmetns so it would work properly. This algorithm is used to write down all the teams the player had at that moment into the pokemonTeams.txt file.
+The way it works is by iterating through every team the user has in the playerTeams arrayList at the end of the program, for each iteration if the playerTeam is empty then it will delete the team, as an empty team
+is purposeless. If it is not empty, then it writes down the teams name to the file first, and then iterates through all the Pokemon on the team to write down their information. All information is divided by a comma so
+it can be read back properly when the program starts up again.
+
+    Another algorithm I've added is the "addUserPokemon" algorithm, which gets input from the user and then creates a Pokemon with the appropriate stats from the information given. This gets the users input for the Pokemon
+of choice, the level, and finally the IVs and EVs. This is all data which effects a Pokemon's stat spread, like its Attack Defense and Health. The higher the IVs, EVs, and level, the better the Pokemon's stats will be. 
+This algorithm uses the generic version of the pokemon from the HashTable to calculate this.
+
+    One opportunity I encountered was early on, when I found a list generator online for all Pokemon (https://pokemondb.net/tools/text-list), this was a super useful way to have a database of all the Pokemon in my program.
+
+    One issue I kept running into was text issues with user input, it was extremely easy to accidentally run into an issue where the program tells the user they have the wrong input even though the user hadn't put anything
+in the program yet. I also had many issues with certain input causing errors, although I fixed everything now I am fairly sure.
+
+    If I could change this app I would probably change a lot. I would definitely make it visual as opposed to from a terminal, I think it would work a lot better with buttons and text fields as opposed to inserting text.
+Especially stuff like choosing the IVs and EVs which are pretty repetitive.  I also feel it would make adding different forms of Pokemon to the team a lot more natural, perhaps there could be a generic version of the 
+Pokemon and then depending on the Pokemon you choose, something could come up letting you change its form. The reason I didn't do a visual program this time is becauase I am still really rusty at Java and have barely
+done anything visual in coding at all. 

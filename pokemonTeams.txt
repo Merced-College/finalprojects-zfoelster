@@ -1,2 +1,4 @@
 chikorita,Chikorita,,Grass,,13,7,7,7,7,6,Chikorita,,Grass,,11,5,6,5,6,5,Chikorita,,Grass,,11,5,6,5,6,5,Chikorita,,Grass,,11,5,6,5,6,5,Chikorita,,Grass,,11,5,6,5,6,5,Chikorita,,Grass,,11,5,6,5,6,5,!
-Good,Chikorita,,Grass,,11,5,6,5,6,5,Chikorita,,Grass,,11,5,6,5,6,5,!
+NewTeam,Chikorita,,Grass,,11,5,6,5,6,5,!
+GoodTeam,Xerneas,,Fairy,,13,7,6,7,6,7,Xerneas,,Fairy,,17,10,8,10,8,8,Xerneas,,Fairy,,17,10,8,10,8,9,Chikorita,,Grass,,13,7,7,7,7,6,!
+NewTeamYay,Eternatus,,Poison,Dragon,484,269,289,389,289,359,!
