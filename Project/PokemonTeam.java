@@ -76,40 +76,43 @@ public class PokemonTeam {
                 userScanner.nextLine();
             }
         }
-        //Get IVs
-        while(true){
-            System.out.println("Enter the IVs of the Pokemon 0-31 (HP, ATK, DEF, SP. ATK, SP. DEF, SPD):");
-            if(userScanner.hasNextInt()){
-                for(int i = 0; i < userIVs.length; i++){
-                    userIVs[i] = userScanner.nextInt();
-                    userScanner.nextLine();
-                    if(userIVs[i] < 0 || userIVs[i] > 31){
-                        System.out.println("Invalid IV. Please try again.");
-                        break;
-                    }
-                }
-                if(userIVs[5] <= 31 && userIVs[5] >= 0){
-                    break;
-                }
-        }
-        }
-        //Get EVs
-        while(true){
-            System.out.println("Enter the EVs of the Pokemon 0-255 (HP, ATK, DEF, SP. ATK, SP. DEF, SPD):");
-            if(userScanner.hasNextInt()){
-                for(int i = 0; i < userEVs.length; i++){
-                    userEVs[i] = userScanner.nextInt();
-                    userScanner.nextLine();
-                    if(userEVs[i] < 0 || userEVs[i] > 255){
-                        System.out.println("Invalid EV. Please try again.");
-                        break;
-                    }
-                }
-                if(userEVs[5] <= 255 && userEVs[5] >= 0){
-                    break;
-                }
+// Get IVs
+for (int i = 0; i < userIVs.length; i++) {
+    while (true) {
+        System.out.println("Enter IV for stat " + (i + 1) + " (0-31):");
+        if (userScanner.hasNextInt()) {
+            userIVs[i] = userScanner.nextInt();
+            userScanner.nextLine();
+            if (userIVs[i] >= 0 && userIVs[i] <= 31) {
+                break; // valid input, move to next stat
+            } else {
+                System.out.println("Invalid IV. Please enter a number between 0 and 31.");
             }
+        } else {
+            System.out.println("Invalid input. Please enter a number.");
+            userScanner.nextLine(); // consume invalid input
         }
+    }
+}
+
+// Get EVs
+for (int i = 0; i < userEVs.length; i++) {
+    while (true) {
+        System.out.println("Enter EV for stat " + (i + 1) + " (0-255):");
+        if (userScanner.hasNextInt()) {
+            userEVs[i] = userScanner.nextInt();
+            userScanner.nextLine();
+            if (userEVs[i] >= 0 && userEVs[i] <= 255) {
+                break; // valid input, move to next stat
+            } else {
+                System.out.println("Invalid EV. Please enter a number between 0 and 255.");
+            }
+        } else {
+            System.out.println("Invalid input. Please enter a number.");
+            userScanner.nextLine(); // consume invalid input
+        }
+    }
+}
         
         //Got formulas for stats from bulbapedia.bulbagarden.net/wiki/Stat
         //Health
